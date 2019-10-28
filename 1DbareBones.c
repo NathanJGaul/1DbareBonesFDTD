@@ -9,7 +9,7 @@
 int main()
 {
     double ez[SIZE] = {0.}, hy[SIZE] = {0.}, imp0 = 377.0;
-    int qTime, maxTime = 250, mm;
+    int qTime, maxTime = 1000, mm;
 
     /* do time stepping */
     for (qTime = 0; qTime < maxTime; qTime++) {
