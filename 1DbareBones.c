@@ -8,8 +8,12 @@
 
 int main()
 {
+    FILE *fp;
+
     double ez[SIZE] = {0.}, hy[SIZE] = {0.}, imp0 = 377.0;
     int qTime, maxTime = 1000, mm;
+    
+    fp = fopen("results.csv", "w");
 
     /* do time stepping */
     for (qTime = 0; qTime < maxTime; qTime++) {
@@ -26,7 +30,12 @@ int main()
         ez[0] = exp(-(qTime - 30.) * (qTime - 30.) / 100.);
         
         printf("%g\n", ez[50]);
+        fprintf(fp, "%d\t%f\n", qTime, ez[50]);
     } /* end of time-stepping */
+
+    fclose(fp);
+
+    system("eplot -d 'results.csv'");
 
     return 0;
 }
