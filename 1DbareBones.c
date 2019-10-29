@@ -29,7 +29,7 @@ int main()
         /* hardwire a source node */
         ez[0] = exp(-(qTime - 30.) * (qTime - 30.) / 100.);
         
-        printf("%g\n", ez[50]);
+        // printf("%g\n", ez[50]);
         fprintf(fp, "%d\t%f\n", qTime, ez[50]);
     } /* end of time-stepping */
 
