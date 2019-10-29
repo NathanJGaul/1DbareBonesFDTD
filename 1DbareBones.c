@@ -26,8 +26,8 @@ int main()
         for (mm = 1; mm < SIZE; mm++)
             ez[mm] = ez[mm] + (hy[mm] - hy[mm - 1]) * imp0;
 
-        /* hardwire a source node */
-        ez[0] = exp(-(qTime - 30.) * (qTime - 30.) / 100.);
+        /* use additive source at node 50 */
+        ez[50] += exp(-(qTime - 30.) * (qTime - 30.) / 100.);
 
         if (qTime % 10 == 0) {
             sprintf(filename, "%s.%d", basename, frame++);
