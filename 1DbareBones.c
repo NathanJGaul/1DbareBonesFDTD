@@ -11,9 +11,26 @@ int main()
 {
     FILE *snapshot;
 
-    double ez[SIZE] = {0.}, hy[SIZE] = {0.}, imp0 = 377.0;
-    int qTime, maxTime = 300, frame = 0, mm;
+    double ez[SIZE], hy[SIZE - 1], epsR[SIZE], imp0 = 377.0;
+    int qTime, maxTime = 1000, frame = 0, mm;
     char basename[80] = "sim", filename[100], command[100];
+
+    /* initialize electric field */
+    for (mm = 0; mm < SIZE; mm++)
+        ez[mm] = 0.0;
+
+    /* initialize magnetic field */
+    for (mm = 0; mm < SIZE - 1; mm++)
+        hy[mm] = 0.0;
+
+    /* set relative permittivity */
+    for (mm = 0; mm < SIZE; mm++) {
+        if (mm < 100)
+            epsR[mm] = 1.0;
+        else
+            epsR[mm] = 9.0;
+    }
+
 
     /* do time stepping */
     for (qTime = 0; qTime < maxTime; qTime++) {
@@ -33,7 +50,7 @@ int main()
 
         /* update electric field */
         for (mm = 1; mm < SIZE; mm++)
-            ez[mm] = ez[mm] + (hy[mm] - hy[mm - 1]) * imp0;
+            ez[mm] = ez[mm] + (hy[mm] - hy[mm - 1]) * imp0 / epsR[mm];
 
         /* correction for Ez adjacent to TFSF boundary */
         ez[50] += exp(-(qTime + 0.5 - (-0.5) - 30.) * 
