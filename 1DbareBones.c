@@ -34,9 +34,6 @@ int main()
 
     /* do time stepping */
     for (qTime = 0; qTime < maxTime; qTime++) {
-        
-        /* use simple ABC */
-        hy[SIZE - 1] = hy[SIZE - 2];
 
         /* update magnetic field */
         for (mm = 0; mm < SIZE - 1; mm++)
@@ -47,6 +44,7 @@ int main()
 
         /* use simple ABC */
         ez[0] = ez[1];
+        ez[SIZE - 1] = ez[SIZE - 2];
 
         /* update electric field */
         for (mm = 1; mm < SIZE; mm++)
