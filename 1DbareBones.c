@@ -3,17 +3,17 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define SIZE 200
 
 int main()
 {
-    FILE *fp;
+    FILE *snapshot;
 
     double ez[SIZE] = {0.}, hy[SIZE] = {0.}, imp0 = 377.0;
-    int qTime, maxTime = 1000, mm;
-    
-    fp = fopen("results.csv", "w");
+    int qTime, maxTime = 1000, frame = 0, mm;
+    char basename[80] = "sim", filename[100], command[100];
 
     /* do time stepping */
     for (qTime = 0; qTime < maxTime; qTime++) {
@@ -28,14 +28,30 @@ int main()
 
         /* hardwire a source node */
         ez[0] = exp(-(qTime - 30.) * (qTime - 30.) / 100.);
-        
-        // printf("%g\n", ez[50]);
-        fprintf(fp, "%d\t%f\n", qTime, ez[50]);
+
+        if (qTime % 10 == 0) {
+            sprintf(filename, "%s.%d", basename, frame++);
+
+            /* open file */
+            snapshot = fopen(filename, "w");
+
+            /* write data to file */
+            for (mm = 0; mm < SIZE; mm++)
+                fprintf(snapshot, "%g\n", ez[mm]);
+
+            /* close file */
+            fclose(snapshot);           
+        }        
     } /* end of time-stepping */
 
-    fclose(fp);
-
-    system("eplot -d 'results.csv'");
+    /* output simulation to command line */
+    for (mm = 0; mm < (maxTime / 10); mm++) {
+        sprintf(filename, "%s.%d", basename, mm);
+        strcpy(command, "eplot -r [0:200][-1:1] -d ");
+        strcat(command, filename);
+        strcat(command, " 2>/dev/null");
+        system(command);
+    }
 
     return 0;
 }
