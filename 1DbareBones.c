@@ -25,6 +25,9 @@ int main()
         for (mm = 0; mm < SIZE - 1; mm++)
             hy[mm] = hy[mm] + (ez[mm + 1] - ez[mm]) / imp0;
 
+        /* correction for Hy adjacent  to TFSF boudary */
+        hy[49] -= exp(-(qTime - 30.) * (qTime - 30.) / 100.) / imp0;
+
         /* use simple ABC */
         ez[0] = ez[1];
 
@@ -32,8 +35,9 @@ int main()
         for (mm = 1; mm < SIZE; mm++)
             ez[mm] = ez[mm] + (hy[mm] - hy[mm - 1]) * imp0;
 
-        /* use additive source at node 50 */
-        ez[50] += exp(-(qTime - 30.) * (qTime - 30.) / 100.);
+        /* correction for Ez adjacent to TFSF boundary */
+        ez[50] += exp(-(qTime + 0.5 - (-0.5) - 30.) * 
+                       (qTime + 0.5 - (-0.5) - 30.) / 100.);
 
         if (qTime % 10 == 0) {
             sprintf(filename, "%s.%d", basename, frame++);
