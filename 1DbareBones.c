@@ -37,7 +37,7 @@ int main()
 
             /* write data to file */
             for (mm = 0; mm < SIZE; mm++)
-                fprintf(snapshot, "%g\n", ez[mm]);
+                fprintf(snapshot, "%g\t%g\n", ez[mm], hy[mm - 1]);
 
             /* close file */
             fclose(snapshot);           
@@ -47,7 +47,7 @@ int main()
     /* output simulation to command line */
     for (mm = 0; mm < (maxTime / 10); mm++) {
         sprintf(filename, "%s.%d", basename, mm);
-        strcpy(command, "eplot -r [0:200][-1:1] -d ");
+        strcpy(command, "eplot -r [0:200][-1:1] -d -M ");
         strcat(command, filename);
         strcat(command, " 2>/dev/null");
         system(command);
