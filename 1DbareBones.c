@@ -12,15 +12,21 @@ int main()
     FILE *snapshot;
 
     double ez[SIZE] = {0.}, hy[SIZE] = {0.}, imp0 = 377.0;
-    int qTime, maxTime = 1000, frame = 0, mm;
+    int qTime, maxTime = 300, frame = 0, mm;
     char basename[80] = "sim", filename[100], command[100];
 
     /* do time stepping */
     for (qTime = 0; qTime < maxTime; qTime++) {
         
+        /* use simple ABC */
+        hy[SIZE - 1] = hy[SIZE - 2];
+
         /* update magnetic field */
         for (mm = 0; mm < SIZE - 1; mm++)
             hy[mm] = hy[mm] + (ez[mm + 1] - ez[mm]) / imp0;
+
+        /* use simple ABC */
+        ez[0] = ez[1];
 
         /* update electric field */
         for (mm = 1; mm < SIZE; mm++)
