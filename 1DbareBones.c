@@ -73,7 +73,7 @@ int main()
 
     /* output simulation to command line */
     for (mm = 0; mm < (maxTime / 10); mm++) {
-        sprintf(filename, "%s.%d", basename, mm);
+        sprintf(filename, "%s.%03d", basename, mm);
         strcpy(command, "eplot -r [0:200][-1:1] -d -M ");
         strcat(command, filename);
         strcat(command, " 2>/dev/null");
